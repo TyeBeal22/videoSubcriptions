@@ -1,0 +1,27 @@
+{% extends 'courses/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<h1 style="text-align:center">Courses</h1>
+
+{% for object in object_list %}
+<div style="display:inline-block;">
+
+<div class="card" style="width:13rem;margin-left:1.4rem;margin-top:1rem">
+  
+  <div class="card-body">
+<div style="text-align: center;">
+<a href="{{ object.get_absolute_url }}" style=" color:#80bdab;">{{ object }}</a>
+
+</div>
+  </div>
+</div>
+
+</div>
+
+
+{% endfor %}
+
+
+{% endblock %}

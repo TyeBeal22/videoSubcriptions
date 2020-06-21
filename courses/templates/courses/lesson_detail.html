@@ -1,0 +1,44 @@
+{% extends 'courses/base.html' %}
+
+{% block post_detail_link %}
+{% if object is not None %}
+
+{% endif %}
+{% endblock %}
+
+{% block content %}
+	<div class='col-md-8' style="margin-left:auto;margin-right:auto;">
+		<h1>Lesson</h1>
+		<hr />
+		<div class='row'>
+			<div class='col-sm-6 col-md-6 embed-responsive embed-responsive-4by3'>
+				{% if object is not None %}
+				  <h3>{{ object.title }}</h3>
+                <p>{{ object.description }}</p>
+				
+				
+				<iframe 
+					    
+					    poster="{{ object.thumbnail.url }}"
+				        src="/static{{ object.video_url }}"
+					    type="video/mp4"
+						allow="fullscreen"
+						allowfullscreen
+					   >
+				    Sorry, your browser doesn't support embedded videos.
+				</iframe>
+                <ul>
+              	<li style="default:none"><a href="{{ object.course.get_absolute_url }}">{{ object.course.title }}</a></li>
+                  </ul>
+				{% else %}
+				<h3>Upgrade membership</h3>
+				<p>To view this course you'll need to upgrade your membership</p>
+				<br>
+				<a href="{% url 'membership:select' %}"><button class="btn btn-warning">Check out memberships</button></a>
+				<hr>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}
