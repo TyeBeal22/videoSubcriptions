@@ -6,7 +6,7 @@ DEBUG = True
 
 SECRET_KEY = '$py+mu503c^6m=zx!)s4(3lp2h6_wx*o16_2on3fs@xwp-pth$'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://mutationcode.herokuapp.com/']
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -116,7 +116,7 @@ VENV_PATH = os.path.dirname(BASE_DIR)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
-
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 if DEBUG:
     STRIPE_PUBLISHABLE_KEY = 'pk_test_4l5XgESJSvTtP42XfyDNQKNr00TZR4oIid'
