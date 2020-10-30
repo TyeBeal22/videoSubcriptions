@@ -4,12 +4,12 @@
 
 
 {% block content %}
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-4 col-md-4">
-				<h1>Course Detail View Page</h1>
-				<img src="{%static 'images/auth.svg' %}" class="img-fluid" alt="svg image" style="margin-top:1rem">
-				<h3>{{ object.title }}</h3>
+<div class="col-5 mx-auto embed-responsive">
+  <div class="rounded py-3">
+			
+				<h1 style="text-align: center">{{ object.title }}</h1>
+				<img src="{{ object.thumbnail.url }}" class="img-fluid" alt="svg image" style="margin-top:1rem">
+			
 				<p>{{ object.description }}</p>
 				<ol>
 					{% for lesson in object.lessons %}
@@ -17,7 +17,7 @@
 					{% endfor %}
 				</ol>
 				
-			</div>
+		
 		</div>
 	</div>
 

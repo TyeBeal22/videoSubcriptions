@@ -1,21 +1,11 @@
-{% if messages %}
-
-<style type="text/css">
-    div.messages{
-        background-color: #ff6b6b;
-        color: #f7fff7;
-    }
-    ul.messages{
-        list-style-type: none;
-    }
-    </style>
-
-    <div class='messages'>
-
-    <ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-    </ul>
-    </div>
-    {% endif %}
+{% if messages %} {% for message in messages %}
+<div
+  class="alert alert-{{ message.tags }} alert-dismissible fade show"
+  role="alert"
+>
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %} {% endif %}

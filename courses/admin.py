@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, Lesson
-
+from .models import Course, Lesson, Video
 
 
 class InLineLesson(admin.TabularInline):
@@ -23,6 +22,7 @@ class CourseAdmin(admin.ModelAdmin):
                 'slug',
                 'title',
                 'description',
+                'thumbnail',
                 'allowed_memberships'
             )
         }),
@@ -33,3 +33,4 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Course, CourseAdmin)
+admin.site.register(Video)

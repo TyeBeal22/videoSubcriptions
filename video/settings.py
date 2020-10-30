@@ -1,17 +1,20 @@
 import os
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = True
 
 
-SECRET_KEY = '$py+mu503c^6m=zx!)s4(3lp2h6_wx*o16_2on3fs@xwp-pth$'
+# SECRET_KEY = ''
 
-ALLOWED_HOSTS = ['https://mutationcode.herokuapp.com/']
+ALLOWED_HOSTS = ['*']
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 INSTALLED_APPS = [
+    'django_docusign',
+    'django_anysign',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,6 +32,7 @@ INSTALLED_APPS = [
 
     'membership',
     'base',
+    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -63,9 +67,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'video.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -73,6 +74,15 @@ DATABASES = {
     }
 }
 
+
+ANYSIGN = {
+    'BACKENDS': {
+        'docusign': 'django_docusign.backend.DocuSignBackend',
+    },
+    'SIGNATURE_TYPE_MODEL': 'django_docusign_demo.models.SignatureType',
+    'SIGNATURE_MODEL': 'django_docusign_demo.models.Signature',
+    'SIGNER_MODEL': 'django_docusign_demo.models.Signer',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -116,15 +126,6 @@ VENV_PATH = os.path.dirname(BASE_DIR)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
-if DEBUG:
-    STRIPE_PUBLISHABLE_KEY = 'pk_test_4l5XgESJSvTtP42XfyDNQKNr00TZR4oIid'
-    STRIPE_SECRET_KEY = 'sk_test_4BezrHpJkWulNjBMVCiANZ2100c230UFGK'
-
-else:
-    STRIPE_PUBLISHABLE_KEY = 'pk_live_INwMdQhFy1beoOIKuxGFm6X9003XmV0MHz'
-    STRIPE_SECRET_KEY = 'sk_live_FdUkKQJj3FNP1LP6m1Ml1FMN00WrzfHFTm'
 
 
 AUTHENTICATION_BACKENDS = (
@@ -153,5 +154,56 @@ if DEBUG is False:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    ALLOWED_HOST = ['https:www.mutationcode.com']
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+# BEGIN settings.DOCUSIGN.
+DOCUSIGN_ROOT_URL = 'https://demo.docusign.net/restapi/v2'
+DOCUSIGN_TIMEOUT = 10
+# END settings.DOCUSIGN.
+
+NOSE_ARGS = [
+    '--verbosity=2',
+    '--no-path-adjustment',
+    '--nocapture',
+    '--all-modules',
+]
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django_dummysign': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'django_anysign_demo': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    }
+}

@@ -2,21 +2,24 @@ from django.db import models
 from django.urls import reverse
 from membership.models import Membership
 
+
 class Course(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120)
     description = models.TextField()
+    thumbnail = models.ImageField(upload_to="thumbnails/")
     allowed_memberships = models.ManyToManyField(Membership)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('courses:detail', kwargs={'slug': self.slug })
+        return reverse('courses:detail', kwargs={'slug': self.slug})
 
     @property
     def lessons(self):
         return self.lesson_set.all().order_by('position')
+
 
 class Lesson(models.Model):
     slug = models.SlugField()
@@ -29,10 +32,27 @@ class Lesson(models.Model):
     def __str__(self):
         return self.title
 
-
     def get_absolute_url(self):
         return reverse('courses:lesson-detail',
-        kwargs={
-            'course_slug': self.course.slug,
-            'lesson_slug': self.slug
-         })
+                       kwargs={
+                           'course_slug': self.course.slug,
+                           'lesson_slug': self.slug
+                       })
+
+
+class Video(models.Model):
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name='videos')
+    vimeo_id = models.CharField(max_length=50)
+    title = models.CharField(max_length=150)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("courses:video-detail", kwargs={
+            "video_slug": self.slug,
+            "course_slug": self.course.slug
+        })
